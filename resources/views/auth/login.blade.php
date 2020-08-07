@@ -3,27 +3,34 @@
 @section('title', 'Laravel Auth | Sign In')
 
 @section('content')
-<div class="row">
-    <div class="col-md-6">
-        <h2>Sign In</h2>
-        <form action="" method="post">
-            @csrf
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="text" class="form-control" id="email" name="email" placeholder="Your email address">
-                @if($errors->has('email'))
-                    <small class="text-danger">{{ $errors->first('email') }}</small>
-                @endif
+<div class="row h-100 justify-content-center align-items-center">
+    <div class="col-md-5">
+        <h2 class="text-center">Sign In</h2>
+        <div class="card mt-4">
+            <div class="card-body">
+                <form action="/" method="post">
+                    @csrf
+                    <div class="form-group">
+                        @if($errors->has('email'))
+                            <label for="email" class="text-danger">{{ $errors->first('email') }}</label>
+                        @else
+                            <label for="email">Email address</label>
+                        @endif
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Your email address">
+                    </div>
+                    <div class="form-group">
+                        @if($errors->has('password'))
+                            <label for="password" class="text-danger">{{ $errors->first('password') }}</label>
+                        @else
+                            <label for="password">Password</label>
+                        @endif
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Your password">
+                        <small><a href="">Forget password?</a></small>
+                    </div>
+                    <button class="btn btn-dark" type="submit">Sign In</button>
+                </form>  
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Your password">
-                @if($errors->has('password'))
-                    <small class="text-danger">{{ $errors->first('password') }}</small>
-                @endif
-            </div>
-            <button class="btn btn-primary" type="submit">Sign In</button>
-        </form>
+        </div>
     </div>
 </div>
 @endsection
