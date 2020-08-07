@@ -42,3 +42,22 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+<script>
+    let flashdata = $('.flashdata').data('flash');
+    if (flashdata === 'no credential') {
+        swal.fire({
+            title: 'Sign In Failed',
+            text: 'Your credentials can\'t be found!',
+            icon: 'error'
+        });
+    } else if (flashdata === 'user created') {
+        swal.fire({
+            title: 'One More Step',
+            text: 'A verification code has been sent to your email!',
+            icon: 'success'
+        });
+    }
+</script>
+@endsection
