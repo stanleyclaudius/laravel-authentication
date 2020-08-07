@@ -9,8 +9,6 @@
 @endsection
 
 @section('content')
-<div class="flashdata" data-flash="{{ Session::get('auth') }}"></div>
-
 <div class="row h-100 justify-content-center align-items-center">
     <div class="col-md-5">
         <h2 class="text-center">Sign In</h2>
@@ -24,7 +22,7 @@
                         @else
                             <label for="email">Email address</label>
                         @endif
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Your email address">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Your email address" value="{{ old('email') }}">
                     </div>
                     <div class="form-group">
                         @if($errors->has('password'))
@@ -41,23 +39,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('script')
-<script>
-    let flashdata = $('.flashdata').data('flash');
-    if (flashdata === 'no credential') {
-        swal.fire({
-            title: 'Sign In Failed',
-            text: 'Your credentials can\'t be found!',
-            icon: 'error'
-        });
-    } else if (flashdata === 'user created') {
-        swal.fire({
-            title: 'One More Step',
-            text: 'A verification code has been sent to your email!',
-            icon: 'success'
-        });
-    }
-</script>
 @endsection

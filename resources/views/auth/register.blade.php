@@ -21,9 +21,8 @@
                             <label for="name" class="text-danger">{{ $errors->first('name') }}</label>
                         @else
                             <label for="name">Full name</label>
-                        @endif
-                        
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Your name">
+                        @endif                        
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Your name" value="{{ old('name') }}">
                     </div>
                     <div class="form-group">
                         @if($errors->has('email'))
@@ -31,8 +30,7 @@
                         @else
                             <label for="email">Email address</label>
                         @endif
-
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Your email address">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Your email address" value="{{ old('email') }}">
                     </div>
                     <div class="form-group">
                         @if($errors->has('password'))

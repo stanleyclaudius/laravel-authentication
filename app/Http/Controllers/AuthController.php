@@ -24,7 +24,12 @@ class AuthController extends Controller
         ]);
 
 		if (Auth::attempt($request->only('email', 'password'))) {
-			return redirect('main/index');
+            $user = User::where('email', $request->email)->get()->first();
+            if ($user->is_verified == 1) {
+                return redirect('/main');
+            } else {
+                return redirect('/verify/' . $request->email);
+            }
 		}
 		return redirect('/')->with('auth', 'no credential');
     }
@@ -38,7 +43,7 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|uniue:users',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
         ]);
@@ -52,7 +57,7 @@ class AuthController extends Controller
         ]);
 
         $token = Token::create([
-            'user_id' => $user->id,
+            'email' => $user->email,
             'token' => strtoupper(Str::random(5)),
         ]);
 
@@ -60,6 +65,7 @@ class AuthController extends Controller
         $to_name = $request->name;
 
         $data = [
+            'name' => $request->name,
             'token' => $token->token,
         ];
 
@@ -69,7 +75,28 @@ class AuthController extends Controller
             $m->to($to_email, $to_name);
         });
 
-        return redirect('/')->with('auth', 'user created');
+        return redirect('/verify/' . $request->email)->with('auth', 'user created');
+    }
+
+    public function verify($email)
+    {
+        $user = User::where('email', $email)->get()->first();
+        if ($user == null) {
+            return redirect('/')->with('auth', 'no verif');
+        }
+        $token = Token::where('email', $email)->get();
+        $finalToken = null;
+        foreach ($token as $t) {
+            if (strlen($t->token) === 5) {
+                $finalToken = $t->token;
+            } else {
+                $finalToken = $finalToken;
+            }
+        }
+        if (!$finalToken) {
+            return redirect('/')->with('auth', 'no verif');
+        }
+        return view('auth/verify', compact(['user']));
     }
 
     public function logout()
