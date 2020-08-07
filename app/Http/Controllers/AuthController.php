@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
 		return redirect('/')->with('auth', 'no credential');
     }
 
-    public function reigster()
+    public function register()
     {
     	return view('auth/register');
     }
