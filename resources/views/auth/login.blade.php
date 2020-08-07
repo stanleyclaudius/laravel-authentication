@@ -2,7 +2,15 @@
 
 @section('title', 'Laravel Auth | Sign In')
 
+@section('navlink')
+<li class="nav-item">
+    <a class="nav-link active" href="/register">Register</a>
+</li>
+@endsection
+
 @section('content')
+<div class="flashdata" data-flash="{{ Session::get('auth') }}"></div>
+
 <div class="row h-100 justify-content-center align-items-center">
     <div class="col-md-5">
         <h2 class="text-center">Sign In</h2>
