@@ -3,7 +3,7 @@
 @section('title', 'Laravel Auth | Verify')
 
 @section('navlink')
-<li class="nav-item">
+<li class="nav-item text-white">
     Verify Account
 </li>
 @endsection
