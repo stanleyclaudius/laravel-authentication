@@ -15,9 +15,11 @@ class AuthController extends Controller
     public function login()
     {
         if (Session::get('log') == 'true') {
-            return redirect()->back();
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
         }
-        
     	return view('auth/login');
     }
 
@@ -28,24 +30,26 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-		if (Auth::attempt($request->only('email', 'password'))) {
+        if (Auth::attempt($request->only('email', 'password'))) {
             $user = User::where('email', $request->email)->get()->first();
             if ($user->is_verified == 1) {
                 Session::put('log', 'true');
+                Session::put('email', $user->email);
                 return redirect('/main');
-            } else {
-                return redirect('/verify/' . $request->email);
             }
-		}
-		return redirect('/')->with('auth', 'no credential');
+            return redirect('/verify/' . $request->email);
+        }
     }
 
     public function register()
     {
         if (Session::get('log') == 'true') {
-            return redirect()->back();
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
         }
-        
+
     	return view('auth/register');
     }
 
@@ -91,7 +95,10 @@ class AuthController extends Controller
     public function verify($email)
     {
         if (Session::get('log') == 'true') {
-            return redirect()->back()->with('auth', 'no verif');
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
         }
 
         $user = User::where('email', $email)->get()->first();
@@ -108,7 +115,7 @@ class AuthController extends Controller
             }
         }
         if (!$finalToken) {
-            return redirect()->back()->with('auth', 'no verif');
+            return redirect('/')->with('auth', 'no verif');
         }
         return view('auth/verify', compact(['user']));
     }
@@ -128,10 +135,63 @@ class AuthController extends Controller
         }
     }
 
+    public function resendVerify($email)
+    {
+        if (Session::get('log') == 'true') {
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
+        }
+
+        $user = User::where('email', $email)->get()->first();
+        if ($user == null) {
+            return redirect('/')->with('auth', 'no verif');
+        }
+        $getAllToken = Token::where('email', $email)->get();
+        $token = null;
+        foreach ($getAllToken as $getToken) {
+            if (strlen($getToken->token) === 5) {
+                $token = $getToken->token;
+            } else {
+                $token = $token;
+            }
+        }
+        if (!$token) {
+            return redirect('/')->with('auth', 'no verif');
+        }
+
+        $tokenRow = Token::find(Token::where('email', $email)->where('token', $token)->get()->first()->id);
+        $tokenRow->update(['token' => strtoupper(Str::random(5))]);
+
+        $to_email = $email;
+        $to_name = $user->name;
+
+        $data = [
+            'name' => $user->name,
+            'token' => $tokenRow->token,
+        ];
+
+        Mail::send('email/confirmation', ['data' => $data], function ($m) use ($to_email, $to_name) {
+            $m->subject('Account Verification');
+            $m->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            $m->to($to_email, $to_name);
+        });
+
+        return redirect('/verify/' . $email)->with('auth', 'resend');
+    }
+
     public function logout()
     {
-	   Auth::logout();
-       Session::pull('log', 'true');
-       return redirect('/')->with('auth', 'logout');
+        if (Session::get('log') == 'true') {
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email') == $user->email) {
+                Auth::logout();
+                Session::pull('log', 'true');
+                Session::pull('email', $user->email);
+                return redirect('/')->with('auth', 'logout');
+            }
+        }
+        return redirect('/');
     }
 }

@@ -10,6 +10,7 @@ Route::post('/register', 'AuthController@postRegister');
 
 Route::get('/verify/{email}', 'AuthController@verify');
 Route::post('/verify/{email}', 'AuthController@postVerify');
+Route::get('/verify/resend/{email}', 'AuthController@resendVerify');
 
 
 Route::group(['middleware' => 'auth'], function() {

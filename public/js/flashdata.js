@@ -35,4 +35,10 @@ if (flashdata === 'no credential') {
         text: 'You have been logout!',
         icon: 'success'
     });
+} else if (flashdata === 'resend') {
+    swal.fire({
+        title: 'Code Resend',
+        text: 'New verification code has been send to your email!',
+        icon: 'success'
+    });
 }

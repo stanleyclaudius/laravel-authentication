@@ -11,8 +11,8 @@
 @section('content')
 <div class="row h-100 justify-content-center">
 	<div class="col-md-7">
-		<div class="alert alert-primary text-center" role="alert">
-			A verification code has been sent to <b>{{ $user->email }}</b>
+		<div class="alert alert-primary text-center" role="alert" style="line-height: 40px;">
+			A verification code has been sent to <b>{{ $user->email }}</b> <br> <a href="/verify/resend/{{ $user->email }}">Resend Verfication Code</a>
 		</div>
 	</div>
 </div>
