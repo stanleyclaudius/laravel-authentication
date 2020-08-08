@@ -99,8 +99,23 @@ class AuthController extends Controller
         return view('auth/verify', compact(['user']));
     }
 
+    public function postVerify(Request $request, $email) 
+    {
+        $token = strtoupper($request->input1 . $request->input2 . $request->input3 . $request->input4 . $request->input5);
+        $token = Token::where('email', $email)->where('token', $token)->get()->first();
+        if (!$token) {
+            return redirect('/verify/' . $email)->with('auth', 'no token found');
+        } else {
+            $userID = User::where('email', $email)->get()->first()->id;
+            $user = User::find($userID);
+            $user->update(['is_verified' => 1]);
+            Token::find($token->id)->delete();
+            return redirect('/')->with('auth', 'verify');
+        }
+    }
+
     public function logout()
     {
-    	
+	   
     }
 }

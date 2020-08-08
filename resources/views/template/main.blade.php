@@ -31,7 +31,7 @@
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
 <script>
     let flashdata = $('.flashdata').data('flash');
@@ -53,7 +53,20 @@
             text: 'You have no right to access this page!',
             icon: 'error'
         });
+    } else if (flashdata === 'no token found') {
+        swal.fire({
+            title: 'Verify Failed',
+            text: 'Verification code not match!',
+            icon: 'error'
+        });
+    } else if (flashdata === 'verify') {
+        swal.fire({
+            title: 'Account Verify',
+            text: 'Your account has been verified!',
+            icon: 'success'
+        });
     }
 </script>
+@yield('script')
 </body>
 </html>
