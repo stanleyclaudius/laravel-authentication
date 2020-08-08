@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -13,6 +14,10 @@ class AuthController extends Controller
 {
     public function login()
     {
+        if (Session::get('log') == 'true') {
+            return redirect()->back();
+        }
+        
     	return view('auth/login');
     }
 
@@ -26,6 +31,7 @@ class AuthController extends Controller
 		if (Auth::attempt($request->only('email', 'password'))) {
             $user = User::where('email', $request->email)->get()->first();
             if ($user->is_verified == 1) {
+                Session::put('log', 'true');
                 return redirect('/main');
             } else {
                 return redirect('/verify/' . $request->email);
@@ -36,6 +42,10 @@ class AuthController extends Controller
 
     public function register()
     {
+        if (Session::get('log') == 'true') {
+            return redirect()->back();
+        }
+        
     	return view('auth/register');
     }
 
@@ -80,9 +90,13 @@ class AuthController extends Controller
 
     public function verify($email)
     {
+        if (Session::get('log') == 'true') {
+            return redirect()->back()->with('auth', 'no verif');
+        }
+
         $user = User::where('email', $email)->get()->first();
         if ($user == null) {
-            return redirect('/')->with('auth', 'no verif');
+            return redirect()->back()->with('auth', 'no verif');
         }
         $token = Token::where('email', $email)->get();
         $finalToken = null;
@@ -94,7 +108,7 @@ class AuthController extends Controller
             }
         }
         if (!$finalToken) {
-            return redirect('/')->with('auth', 'no verif');
+            return redirect()->back()->with('auth', 'no verif');
         }
         return view('auth/verify', compact(['user']));
     }
@@ -116,6 +130,8 @@ class AuthController extends Controller
 
     public function logout()
     {
-	   
+	   Auth::logout();
+       Session::pull('log', 'true');
+       return redirect('/')->with('auth', 'logout');
     }
 }

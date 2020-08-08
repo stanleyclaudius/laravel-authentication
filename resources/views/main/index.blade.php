@@ -1,5 +1,7 @@
 @extends('template/main')
 
+@section('title', 'Laravel Auth | Main Page')
+
 @section('navlink')
 <li class="nav-item">
     <a class="nav-link active" href="/logout">Sign Out</a>
