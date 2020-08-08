@@ -14,6 +14,6 @@ Route::get('/verify/resend/{email}', 'AuthController@resendVerify');
 
 
 Route::group(['middleware' => 'auth'], function() {
-	Route::get('/main', 'MainController@index');
 	Route::get('/logout', 'AuthController@logout');
+	Route::get('/main', 'MainController@index');
 });

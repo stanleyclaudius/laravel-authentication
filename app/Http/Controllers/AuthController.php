@@ -19,6 +19,7 @@ class AuthController extends Controller
             if (Session::get('email', $user->email)) {
                 return redirect()->back();
             }
+            return redirect('/');
         }
     	return view('auth/login');
     }
@@ -39,6 +40,7 @@ class AuthController extends Controller
             }
             return redirect('/verify/' . $request->email);
         }
+        return redirect('/')->with('auth', 'no credential');
     }
 
     public function register()
@@ -48,6 +50,7 @@ class AuthController extends Controller
             if (Session::get('email', $user->email)) {
                 return redirect()->back();
             }
+            return redirect('/');
         }
 
     	return view('auth/register');
@@ -99,6 +102,7 @@ class AuthController extends Controller
             if (Session::get('email', $user->email)) {
                 return redirect()->back();
             }
+            return redirect('/');
         }
 
         $user = User::where('email', $email)->get()->first();
@@ -142,6 +146,7 @@ class AuthController extends Controller
             if (Session::get('email', $user->email)) {
                 return redirect()->back();
             }
+            return redirect('/');
         }
 
         $user = User::where('email', $email)->get()->first();
@@ -191,6 +196,7 @@ class AuthController extends Controller
                 Session::pull('email', $user->email);
                 return redirect('/')->with('auth', 'logout');
             }
+            return redirect('/');
         }
         return redirect('/');
     }
