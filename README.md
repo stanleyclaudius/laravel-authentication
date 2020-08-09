@@ -1,79 +1,82 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+## Website Features
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+**Laravel Authentication** is a laravel website that create for someone wish to create app using laravel with full authentication feature. We provide a mostly complete authentication include:
 
-## About Laravel
+- Login and Register
+- Account Verification When Register Via Email
+- Forget Password
+- Secure Website
+- Main Page (After Login Page)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Pre-requisite that you must know
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Command Prompt basic including how to stop a running command (CTRL + C), changind directory (cd **file_location**)
+- Database Knowledge
+- Laravel Basic
+- HTML, CSS, JS
 
-## Learning Laravel
+## Setup Guide After Clone
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Open your clone result project at your code editor, then create a new file name **.env** at your root folder or in this project, the root folder is **laravel-authentication**, if you don't change the folder name, then you can make a new file at that folder name **.env**.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. After creating **.env** file, you can open **.env.example** file at your clone result project, then copy everything to the **.env** file that you created before.
 
-## Laravel Sponsors
+3. After copying everything to your **.env** file, you should change value of your database setting, by changing **DB_CONNECTION**, **DB_HOST**, **DB_PORT**, **DB_DATABASE**, **DB_USERNAME**, and **DB_PASSWORD** value to your database configuration. At default state, the database configuration from your copy result from **.env.example** file, will assumed that you used **MySQL** database, if you use **MySQL** database, then you only need to change (at your **.env** file) **DB_DATABASE** value become your **DATABASE NAME FOR THIS PROJECT**, **DB_USERNAME** value become your **DATABASE USERNAME**, and **DB_PASSWORD** value become your **DATABASE PASSWORD**. If you use other database beside **MySQL**, then you should change every database configuration at **.env** file.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+4. Note that .env file may not contain space as a value, e.g. DB_DATABASE=MY DATABASE, this will error because .env file may not contain space at value, if you wish to use space then you should use a quotation mark between the value for example DB_DATABASE="MY DATABASE" or without space.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
-- [云软科技](http://www.yunruan.ltd/)
+5. Because this project include verification code when user register, so this project require your email username and password. I will assume your **.env** file has email configuration already, in this case you can choose whether you want to use **GMAIL** send mail feature or **Mailtrap** feature or other mail service. **Mailtrap** is a fake email service, that can send your message to other people email from **Mailtrap Email** without sending to real email.
 
-## Contributing
+6. As default, your **.env** file mail configuration will use **Mailtrap** service, let's say you want to use **Mailtrap** service, so the first step if you choose **Mailtrap** service is you should go to [mailtrap.io](https://mailtrap.io) then Sign Up account, after that you should login and then click **New Project** button, then setting your project according to mailtrap instruction. After everything done, You will see an inboxes that contains your project name that you created before then click it. After that you will see **SMTP Settings** menu, then choose the Integrations to **Laravel**, then replace your email configuration at **.env** file become your configuration that you got from [mailtrap.io](https://mailtrap.io) (If you need more detail for configuring **Mailtrap**, scroll down and copy the configuration to your **.env** file) then continue to step 7.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+7. Because this project is made for **Educational Purpose** then i recommend using **Mailtrap** as your mail service to get a safer mail service for your email. It's only my personal opinion, if you wish to use **GMAIL** as your mail service, then you can check the configuration at below.
 
-## Code of Conduct
+8. Now the configuration is done, so next thing is you need to create a database for this project using your prefer database service, the database name should be the same as the **DB_DATABASE value** at your **.env** file that you create at step 3.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+9. Now we need to install all package using composer, write `composer install` at your **Command Prompt** or **Terminal** at root folder of this project, in this project the root folder is **laravel-authentication** if you don't change it
 
-## Security Vulnerabilities
+10. After create database for this project, now you should create the table, in **Laravel**, there is a function call artisan, so all you need to do to create the table is open up your **Command Prompt** at your laptop  or if you use mac than open **Terminal**, after you open it, change the current directory to your project location until the root file, in this case, the root file is **laravel-authentication**, so you just need to change your directory until **laravel-authentication**, after that you need to write `php artisan migrate` at your **Command Prompt** or your **Terminal**.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+11. Now your application is ready to use, type `php artisan serve` at your command prompt or terminal then open in your browser, and the url will be `127.0.0.1:8000`.
 
-## License
+12. FYI : This project is created using Boostrap 4.5 framework.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Mailtrap Configuration
+Before using Mailtrap, please sign up and then register and add click **New Project** button and follow the Mailtrap instruction. Read step 6 for more detail setting up **Mailtrap** account, below just contains Mailtrap configration at your **.env** file:
+KEY | VALUE
+--- | -----
+MAIL_MAILER | smtp
+MAIL_HOST | smtp.mailtrap.io
+MAIL_PORT | 2525
+MAIL_USERNAME | YOUR_USERNAME_YOU_GOT_BY_CLICK_INTEGRATIONS_TO_LARAVEL_AT_SMTP_SETTINGS
+MAIL_PASSWORD | YOUR_PASSWORD_YOU_GOT_BY_CLICK_INTEGRATIONS_TO_LARAVEL_AT_SMTP_SETTINGS
+MAIL_ENCRYPTION | tls
+MAIL_FROM_ADDRESS | EMAIL_ADDRESS_YOU_WANT_TO_USE_FOR_SENDING_EMAIL
+MAIL_FROM_NAME | BRAND_NAME_YOU_WANT_TO_USE_FOR_SENDING_EMAIL
+
+## GMAIL Configuration
+I don't recommend using GMAIL SMTP for deploying for website, because you should change some configuration in your google email, that can harm your email secure, but if for **Educational Purpose** it'll be fine, but for deploying website, I recommend using google API for sending mail instead of SMTP. I will show the configuration for GMAIL SMTP below:
+KEY | VALUE
+--- | -----
+MAIL_MAILER | smtp
+MAIL_HOST | smtp.googlemail.com
+MAIL_PORT | 465
+MAIL_USERNAME | YOUR_EMAIL_ADDRESS
+MAIL_PASSWORD | YOUR_EMAIL_PASSWORD
+MAIL_ENCRYPTION | ssl
+MAIL_FROM_ADDRESS | EMAIL_ADDRESS_YOU_WANT_TO_USE_FOR_SENDING_EMAIL
+MAIL_FROM_NAME | NAME_YOU_WANT_TO_USE_FOR_SENDING_EMAIL
+
+After changing your email configuration at your **.env** file, now you need to change your setting at your GMAIL account:
+1. Open your gmail account, [mail.google.com](https://mail.google.com).
+2. On the right side, you will see your profile picture, click it, then choose **Manage your Google Account** button.
+3. Then you will got a bunch of menu at left side, now you choose the **Security** menu.
+4. After choosing **Security** menu, scroll down and look for **Less secure app access**, then click **Turn on access (not recommended)**, by default it's off, but if you want to use GMAIL service for this project, then you should turn it on.
+5. After above step is done, then you can use GMAIL service already for this project.
+
+## Project purpose
+This project is created for **Educational Purpose**, but if you want to deploy this project as your online shop, it can, but i recommend using google API for sending mail rather than google SMTP, because google API is more safer than using SMTP for deploying website. You can use **Mailtrap** for your mail service too, but it's fake email service, so it's not send to real email. But it's personal choice what you wan to use, I personally recommend using **Mailtrap** for safer purpose if you only want to use this project as educational purpose, if you want to use this project as your real shop website, then I recommend using **GMAIL API** for your project.
+
+## Thank You
+Thanks for cloning this project, if you wish to add new feature or fixed some bug that you found, you can create a pull request for me in this project. Thanks for your time looking at this project. Stay Code Stay Awesome!
