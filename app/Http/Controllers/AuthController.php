@@ -31,15 +31,18 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = User::where('email', $request->email)->get()->first();
+        $user = User::where('email', $request->email)->get()->first();
+        if ($user) {
             if ($user->is_verified == 1) {
+                Auth::attempt($request->only('email', 'password'));
                 Session::put('log', 'true');
                 Session::put('email', $user->email);
                 return redirect('/main');
+            } else {
+                return redirect('/verify/' . $request->email);
             }
-            return redirect('/verify/' . $request->email);
         }
+        
         return redirect('/')->with('auth', 'no credential');
     }
 
