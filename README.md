@@ -11,7 +11,7 @@
 
 ## Pre-requisite that you must know
 
-- Command Prompt basic including how to stop a running command (CTRL + C), changind directory (cd **file_location**)
+- Command Prompt basic including how to stop a running command (CTRL + C), changing directory (cd **file_location**)
 - Database Knowledge
 - Laravel Basic
 - HTML, CSS, JS
