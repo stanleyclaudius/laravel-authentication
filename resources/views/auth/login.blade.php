@@ -31,7 +31,7 @@
                             <label for="password">Password</label>
                         @endif
                         <input type="password" class="form-control" id="password" name="password" placeholder="Your password">
-                        <small><a href="">Forget password?</a></small>
+                        <small><a href="/forget">Forget password?</a></small>
                     </div>
                     <button class="btn btn-dark" type="submit">Sign In</button>
                 </form>  

@@ -186,6 +186,107 @@ class AuthController extends Controller
         return redirect('/verify/' . $email)->with('auth', 'resend');
     }
 
+    public function forgetPassword()
+    {
+        return view('auth/forget');
+    }
+
+    public function postForgetPassword(Request $request)
+    {
+        if (Session::get('log') == 'true') {
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
+            return redirect('/');
+        }
+        
+        $this->validate($request, [
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->get()->first();
+        if (!$user) {
+            return redirect('/forget')->with('auth', 'email not found');
+        }
+
+        $token = Token::create([
+            'email' => $request->email,
+            'token' => Str::random(30),
+        ]);
+
+        $data = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'token' => $token->token,
+        ];
+
+        $to_email = $user->email;
+        $to_name = $user->name;
+
+        Mail::send('email/forget', ['data' => $data], function ($m) use ($to_email, $to_name) {
+            $m->subject('Password Reset');
+            $m->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            $m->to($to_email, $to_name);
+        });
+
+        return redirect('/forget')->with('auth', 'reset link send');
+    }
+
+    public function resetPassword($email, $token)
+    {
+        if (Session::get('log') == 'true') {
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
+            return redirect('/');
+        }
+
+        $token = Token::where('email', $email)->where('token', $token)->get()->first();
+
+        if (!$token) {
+            return redirect('/')->with('auth', 'no verif');
+        }
+
+        return view('auth/reset', [
+            'email' => $email,
+            'token' => $token,
+        ]);
+    }
+
+    public function postResetPassword(Request $request, $email, $token)
+    {
+        if (Session::get('log') == 'true') {
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
+            return redirect('/');
+        }
+
+        $oldToken = Token::where('email', $email)->where('token', $token)->get()->first();
+
+        if (!$oldToken) {
+            return redirect('/')->with('auth', 'no verif');
+        }
+
+        $this->validate($request, [
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required|min:6',
+        ]);
+
+        $user = User::find(User::where('email', $email)->get()->first()->id);
+        $user->update([
+            'password' => bcrypt($request->password),
+        ]);
+
+        $oldToken2 = Token::find($oldToken->id);
+        $oldToken2->delete();
+
+        return redirect('/')->with('auth', 'password changed');
+    }
+
     public function logout()
     {
         if (Session::get('log') == 'true') {

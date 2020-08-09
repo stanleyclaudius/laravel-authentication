@@ -41,4 +41,22 @@ if (flashdata === 'no credential') {
         text: 'New verification code has been send to your email!',
         icon: 'success'
     });
+} else if (flashdata === 'email not found') {
+    swal.fire({
+        title: 'Failed Reset',
+        text: 'Your email not found, or perhaps you don\'t use your registered email at this app!',
+        icon: 'error'
+    });
+} else if (flashdata === 'reset link send') {
+    swal.fire({
+        title: 'Check Your Email',
+        text: 'A reset link has been sent to your email that you fill just now!',
+        icon: 'success'
+    });
+} else if (flashdata === 'password changed') {
+    swal.fire({
+        title: 'Password Changed',
+        text: 'Your password has been changed!',
+        icon: 'success'
+    });
 }
