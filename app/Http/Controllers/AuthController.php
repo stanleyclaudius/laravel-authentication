@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Token;
 use App\User;
 use Auth;
+use Hash;
 
 class AuthController extends Controller
 {
@@ -33,14 +34,18 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->get()->first();
         if ($user) {
-            if ($user->is_verified == 1) {
-                Auth::attempt($request->only('email', 'password'));
-                Session::put('log', 'true');
-                Session::put('email', $user->email);
-                return redirect('/main');
-            } else {
-                return redirect('/verify/' . $request->email);
-            }
+        	if (Hash::check($request->password, $user->password)) {
+        		if ($user->is_verified == 1) {
+	                Auth::attempt($request->only('email', 'password'));
+	                Session::put('log', 'true');
+	                Session::put('email', $user->email);
+	                return redirect('/main');
+	            } else {
+	                return redirect('/verify/' . $request->email);
+	            }
+        	} else {
+        		return redirect('/')->with('auth', 'no credential');
+        	}
         }
         
         return redirect('/')->with('auth', 'no credential');
@@ -213,25 +218,57 @@ class AuthController extends Controller
             return redirect('/forget')->with('auth', 'email not found');
         }
 
-        $token = Token::create([
-            'email' => $request->email,
-            'token' => Str::random(30),
-        ]);
+        $fetchToken = Token::where('email', $request->email)->get();
+        $forgetToken = null;
+        foreach ($fetchToken as $fetchT) {
+        	if (strlen($fetchT->token) == 30) {
+        		$forgetToken = $fetchT->token;
+        	} else {
+        		$forgetToken = null;
+        	}
+        }
 
-        $data = [
-            'name' => $user->name,
-            'email' => $user->email,
-            'token' => $token->token,
-        ];
+        if ($forgetToken == null) {
+        	$token = Token::create([
+	            'email' => $request->email,
+	            'token' => Str::random(30),
+	        ]);
 
-        $to_email = $user->email;
-        $to_name = $user->name;
+	        $data = [
+	            'name' => $user->name,
+	            'email' => $user->email,
+	            'token' => $token->token,
+	        ];
 
-        Mail::send('email/forget', ['data' => $data], function ($m) use ($to_email, $to_name) {
-            $m->subject('Password Reset');
-            $m->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-            $m->to($to_email, $to_name);
-        });
+	        $to_email = $user->email;
+	        $to_name = $user->name;
+
+	        Mail::send('email/forget', ['data' => $data], function ($m) use ($to_email, $to_name) {
+	            $m->subject('Password Reset');
+	            $m->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+	            $m->to($to_email, $to_name);
+	        });	
+        } else {
+        	$token = Token::find(Token::where('email', $request->email)->where('token', $forgetToken)->get()->first()->id);
+        	$token->update([
+        		'token' => Str::random(30),
+        	]);
+
+        	$data = [
+	            'name' => $user->name,
+	            'email' => $user->email,
+	            'token' => $token->token,
+	        ];
+
+	        $to_email = $user->email;
+	        $to_name = $user->name;
+
+	        Mail::send('email/forget', ['data' => $data], function ($m) use ($to_email, $to_name) {
+	            $m->subject('Password Reset');
+	            $m->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+	            $m->to($to_email, $to_name);
+	        });	
+        }
 
         return redirect('/forget')->with('auth', 'reset link send');
     }
