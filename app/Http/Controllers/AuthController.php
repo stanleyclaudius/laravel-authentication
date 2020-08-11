@@ -196,6 +196,14 @@ class AuthController extends Controller
 
     public function forgetPassword()
     {
+    	if (Session::get('log') == 'true') {
+            $user = User::find(auth()->user()->id);
+            if (Session::get('email', $user->email)) {
+                return redirect()->back();
+            }
+            return redirect('/');
+        }
+        
         return view('auth/forget');
     }
 
