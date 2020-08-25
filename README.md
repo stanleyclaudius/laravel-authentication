@@ -38,9 +38,11 @@
 
 10. After create database for this project, now you should create the table, in **Laravel**, there is a function call artisan, so all you need to do to create the table is open up your **Command Prompt** at your laptop  or if you use mac than open **Terminal**, after you open it, change the current directory to your project location until the root file, in this case, the root file is **laravel-authentication**, so you just need to change your directory until **laravel-authentication**, after that you need to write `php artisan migrate` at your **Command Prompt** or your **Terminal**.
 
-11. Now your application is ready to use, type `php artisan serve` at your command prompt or terminal then open in your browser, and the url will be `127.0.0.1:8000`.
+11. Last step is to generate APP_KEY, type in your command prompt or terminal `php artisan key:generate` pointing at your root directory
 
-12. FYI : This project is created using Boostrap 4.5 framework.
+12. Now your application is ready to use, type `php artisan serve` at your command prompt or terminal then open in your browser, and the url will be `127.0.0.1:8000`.
+
+13. FYI : This project is created using Boostrap 4.5 framework.
 
 ## Mailtrap Configuration
 Before using Mailtrap, please sign up and then register and add click **New Project** button and follow the Mailtrap instruction. Read step 6 for more detail setting up **Mailtrap** account, below just contains Mailtrap configration at your **.env** file:
